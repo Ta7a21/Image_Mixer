@@ -11,7 +11,9 @@ import cv2
 def applyFourier(self, image, compWidget):
     # arr = np.asarray(image)
     fft = np.fft.fft2(image)
+    print(fft)
     fftshift = np.fft.fftshift(fft)
+    print(fft2)
     magnitude = np.abs(fftshift)
     phase = np.angle(fft)
     real = np.real(fft)
@@ -43,7 +45,6 @@ def applyFourier(self, image, compWidget):
 
 def read_image(self, filename, imageWidget, compWidget):
     img = cv2.imread(filename)
-    cv2.imshow("image", img)
     pix = QPixmap(filename)
     pix = pix.scaled(230, 230, QtCore.Qt.KeepAspectRatio,
                      QtCore.Qt.FastTransformation)
@@ -51,7 +52,7 @@ def read_image(self, filename, imageWidget, compWidget):
     scene = QtWidgets.QGraphicsScene(self)
     scene.addItem(item)
     imageWidget.setScene(scene)
-    # applyFourier(self, img, compWidget)
+    applyFourier(self, img, compWidget)
 # def read_jpeg(filename):
 #     print("alo2")
 
