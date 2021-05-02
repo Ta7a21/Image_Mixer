@@ -7,15 +7,22 @@ import numpy as np
 
 def applyFourier(self, image, compWidget):
     fft = np.fft.fft2(Image.Image.getdata(image))
+    '''
     magnitude = np.abs(fft)
     phase = np.angle(fft)
     real = np.real(fft)
     imaginary = np.imag(fft)
+    '''
+    
+    
+    magnitude1 = Image.fromarray(np.abs(fft))
+    phase1 = Image.fromarray(np.angle(fft))
+    real1 = Image.fromarray(np.real(fft))
+    imaginary1 = Image.fromarray(np.imag(fft))
     
     
     print(len(fft))
-    print(real)
-    print(imaginary)
+
 
 
 def read_image(self, filename, imageWidget, compWidget):
