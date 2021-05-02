@@ -1,23 +1,43 @@
+from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QFileDialog
+from PIL import Image
+import numpy as np
 
 
-def read_png(filename):
-    print("alo")
+def applyFourier(self, image, compWidget):
+    fft = np.fft.fft2(Image.Image.getdata(image))
+    magnitude = np.abs(fft)
+    phase = np.angle(fft)
+    print(len(fft))
 
 
-def read_jpeg(filename):
-    print("alo2")
+def read_image(self, filename, imageWidget, compWidget):
+    img = Image.open(filename)
+    pix = QPixmap(filename)
+    pix = pix.scaled(230, 230, QtCore.Qt.KeepAspectRatio,
+                     QtCore.Qt.FastTransformation)
+    item = QtWidgets.QGraphicsPixmapItem(pix)
+    scene = QtWidgets.QGraphicsScene(self)
+    scene.addItem(item)
+    imageWidget.setScene(scene)
+    applyFourier(self, img, compWidget)
+# def read_jpeg(filename):
+#     print("alo2")
 
 
-def browsefiles(self):
+def openConnect(self, imageWidget, compWidget, openImage):
+    openImage.triggered.connect(
+        lambda: browsefiles(self, imageWidget, compWidget))
+
+
+def browsefiles(self, imageWidget, compWidget):
     fname = QFileDialog.getOpenFileName(
         self, "Open file", "../", " *.png;;" "*.jpeg;;"
     )
     file_path = fname[0]
-    if file_path.endswith(".png"):
-        read_png(file_path)
-    elif file_path.endswith(".jpeg"):
-        read_jpeg(file_path)
+
+    read_image(self, file_path, imageWidget, compWidget)
 
 
 def sliderConnect(self, slider, label):
