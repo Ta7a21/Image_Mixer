@@ -7,29 +7,41 @@ import numpy as np
 
 
 def applyFourier(self, image, compWidget):
-    fft = np.fft.fft2(Image.Image.getdata(image))
-    '''
+    arr=np.asarray(image)
+    print(arr)
+    arr2 = np.array(image.getdata())
+    print(arr2)
+    fft = np.fft.fft2(image)
     magnitude = np.abs(fft)
     phase = np.angle(fft)
     real = np.real(fft)
     imaginary = np.imag(fft)
-    '''
-
-    magnitude1 = Image.fromarray(np.abs(fft))
-    if magnitude1.mode != 'RGB':
-        magnitude1 = magnitude1.convert('RGB')
+   # magnitude1 = np.fft.ifft2(magnitude)
+    #print(magnitude1)
+    
+    magnitude = np.interp(magnitude, (magnitude.min(),magnitude.max()),(0,255))
+    magnitude1 = Image.fromarray(magnitude)
+    
+    
+    # if magnitude1.mode != 'RGB':
+    #     magnitude1 = magnitude1.convert('RGB')
+        
+    
     # phase1 = Image.fromarray(np.angle(fft))
     # real1 = Image.fromarray(np.real(fft))
     # imaginary1 = Image.fromarray(np.imag(fft))
     qim = ImageQt(magnitude1)
     pix = QPixmap.fromImage(qim)
-    pix = pix.scaled(230, 230, QtCore.Qt.KeepAspectRatio,
-                     QtCore.Qt.FastTransformation)
+    pix = pix.scaled(230, 230, QtCore.Qt.IgnoreAspectRatio,
+                    QtCore.Qt.FastTransformation)
     item = QtWidgets.QGraphicsPixmapItem(pix)
     scene = QtWidgets.QGraphicsScene(self)
     scene.addItem(item)
     compWidget.setScene(scene)
-    # print(len(fft))
+    print(compWidget)
+    print(len(fft))
+    print(type(magnitude1))
+    print(type(image))
 
 
 def read_image(self, filename, imageWidget, compWidget):
