@@ -18,8 +18,8 @@ def applyFourier(self, image, compWidget):
     phase = np.angle(fft)
     real = np.real(fft)
     imaginary = np.imag(fft)
-    cv2.imwrite('image.jpg',magnitude/255)
-    cv2.imshow('imgae.jpg',magnitude/255)
+    # cv2.imwrite('image.jpg',magnitude/255)
+    cv2.imshow('image.jpg', magnitude/255)
     magnitude1 = Image.fromarray((phase).astype(np.uint8))
 
     if magnitude1.mode != 'RGB':
