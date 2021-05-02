@@ -2,6 +2,7 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QFileDialog
 from PIL import Image
+from PIL.ImageQt import ImageQt
 import numpy as np
 
 
@@ -13,16 +14,22 @@ def applyFourier(self, image, compWidget):
     real = np.real(fft)
     imaginary = np.imag(fft)
     '''
-    
-    
-    magnitude1 = Image.fromarray(np.abs(fft))
-    phase1 = Image.fromarray(np.angle(fft))
-    real1 = Image.fromarray(np.real(fft))
-    imaginary1 = Image.fromarray(np.imag(fft))
-    
-    
-    print(len(fft))
 
+    magnitude1 = Image.fromarray(np.abs(fft))
+    if magnitude1.mode != 'RGB':
+        magnitude1 = magnitude1.convert('RGB')
+    # phase1 = Image.fromarray(np.angle(fft))
+    # real1 = Image.fromarray(np.real(fft))
+    # imaginary1 = Image.fromarray(np.imag(fft))
+    qim = ImageQt(magnitude1)
+    pix = QPixmap.fromImage(qim)
+    pix = pix.scaled(230, 230, QtCore.Qt.KeepAspectRatio,
+                     QtCore.Qt.FastTransformation)
+    item = QtWidgets.QGraphicsPixmapItem(pix)
+    scene = QtWidgets.QGraphicsScene(self)
+    scene.addItem(item)
+    compWidget.setScene(scene)
+    # print(len(fft))
 
 
 def read_image(self, filename, imageWidget, compWidget):
