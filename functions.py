@@ -13,7 +13,7 @@ def applyFourier(self, image, compWidget):
     fft = np.fft.fft2(image)
     print(fft)
     fftshift = np.fft.fftshift(fft)
-    print(fft2)
+    print(fftshift)
     magnitude = np.abs(fftshift)
     phase = np.angle(fft)
     real = np.real(fft)
