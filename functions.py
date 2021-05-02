@@ -43,15 +43,14 @@ def applyFourier(self, image, compWidget):
 
 def read_image(self, filename, imageWidget, compWidget):
     img = cv2.imread(filename)
-    print(img)
     cv2.imshow("image", img)
-    # pix = QPixmap(filename)
-    # pix = pix.scaled(230, 230, QtCore.Qt.KeepAspectRatio,
-    #                  QtCore.Qt.FastTransformation)
-    # item = QtWidgets.QGraphicsPixmapItem(pix)
-    # scene = QtWidgets.QGraphicsScene(self)
-    # scene.addItem(item)
-    # imageWidget.setScene(scene)
+    pix = QPixmap(filename)
+    pix = pix.scaled(230, 230, QtCore.Qt.KeepAspectRatio,
+                     QtCore.Qt.FastTransformation)
+    item = QtWidgets.QGraphicsPixmapItem(pix)
+    scene = QtWidgets.QGraphicsScene(self)
+    scene.addItem(item)
+    imageWidget.setScene(scene)
     # applyFourier(self, img, compWidget)
 # def read_jpeg(filename):
 #     print("alo2")
