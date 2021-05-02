@@ -4,56 +4,55 @@ from PyQt5.QtWidgets import QFileDialog
 from PIL import Image
 from PIL.ImageQt import ImageQt
 import numpy as np
+import matplotlib.pyplot as plt
+import cv2
 
 
 def applyFourier(self, image, compWidget):
-    arr=np.asarray(image)
-    print(arr)
-    arr2 = np.array(image.getdata())
-    print(arr2)
+    # arr = np.asarray(image)
     fft = np.fft.fft2(image)
-    magnitude = np.abs(fft)
+    fftshift = np.fft.fftshift(fft)
+    magnitude = np.abs(fftshift)
     phase = np.angle(fft)
     real = np.real(fft)
     imaginary = np.imag(fft)
-   # magnitude1 = np.fft.ifft2(magnitude)
-    #print(magnitude1)
-    
-    magnitude = np.interp(magnitude, (magnitude.min(),magnitude.max()),(0,255))
-    magnitude1 = Image.fromarray(magnitude)
-    
-    
-    # if magnitude1.mode != 'RGB':
-    #     magnitude1 = magnitude1.convert('RGB')
-        
-    
+    magnitude1 = Image.fromarray((phase).astype(np.uint8))
+
+    if magnitude1.mode != 'RGB':
+        magnitude1 = magnitude1.convert('RGB')
+    # arr = np.array(magnitude1.getdata())
+    # print(arr)
     # phase1 = Image.fromarray(np.angle(fft))
     # real1 = Image.fromarray(np.real(fft))
     # imaginary1 = Image.fromarray(np.imag(fft))
+    plt.imshow(phase)
+    plt.show()
     qim = ImageQt(magnitude1)
     pix = QPixmap.fromImage(qim)
     pix = pix.scaled(230, 230, QtCore.Qt.IgnoreAspectRatio,
-                    QtCore.Qt.FastTransformation)
-    item = QtWidgets.QGraphicsPixmapItem(pix)
-    scene = QtWidgets.QGraphicsScene(self)
-    scene.addItem(item)
-    compWidget.setScene(scene)
-    print(compWidget)
-    print(len(fft))
-    print(type(magnitude1))
-    print(type(image))
-
-
-def read_image(self, filename, imageWidget, compWidget):
-    img = Image.open(filename)
-    pix = QPixmap(filename)
-    pix = pix.scaled(230, 230, QtCore.Qt.KeepAspectRatio,
                      QtCore.Qt.FastTransformation)
     item = QtWidgets.QGraphicsPixmapItem(pix)
     scene = QtWidgets.QGraphicsScene(self)
     scene.addItem(item)
-    imageWidget.setScene(scene)
-    applyFourier(self, img, compWidget)
+    compWidget.setScene(scene)
+    # print(compWidget)
+    # print(len(fft))
+    # print(type(magnitude1))
+    # print(type(image))
+
+
+def read_image(self, filename, imageWidget, compWidget):
+    img = cv2.imread(filename)
+    print(img)
+    cv2.imshow("image", img)
+    # pix = QPixmap(filename)
+    # pix = pix.scaled(230, 230, QtCore.Qt.KeepAspectRatio,
+    #                  QtCore.Qt.FastTransformation)
+    # item = QtWidgets.QGraphicsPixmapItem(pix)
+    # scene = QtWidgets.QGraphicsScene(self)
+    # scene.addItem(item)
+    # imageWidget.setScene(scene)
+    # applyFourier(self, img, compWidget)
 # def read_jpeg(filename):
 #     print("alo2")
 
@@ -65,7 +64,7 @@ def openConnect(self, imageWidget, compWidget, openImage):
 
 def browsefiles(self, imageWidget, compWidget):
     fname = QFileDialog.getOpenFileName(
-        self, "Open file", "../", " *.png;;" "*.jpeg;;"
+        self, "Open file", "../", " *.png;;" "*.jpg;;"
     )
     file_path = fname[0]
 

@@ -18,6 +18,8 @@ class Ui(QtWidgets.QMainWindow):
             tools.openConnect(self, images[i], components[i], openImages[i])
             tools.sliderConnect(self, sliders[i], sliderLabels[i])
         self.mixerComp_1.activated[str].connect(lambda: tools.comboboxChange(
+
+
             self, self.mixerComp_2, self.mixerComp_1.currentText()))
 
 
