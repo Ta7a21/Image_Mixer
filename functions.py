@@ -11,14 +11,14 @@ import cv2
 def applyFourier(self, image, compWidget):
     # arr = np.asarray(image)
     fft = np.fft.fft2(image)
-    print(fft)
+    # print(fft)
     fftshift = np.fft.fftshift(fft)
-    print(fftshift)
+    # print(fftshift)
     magnitude = np.abs(fftshift)
     phase = np.angle(fft)
-    real = np.real(fft)
+    real = np.real(np.fft.fftshift(fft))
     imaginary = np.imag(fft)
-    magnitude1 = Image.fromarray((phase).astype(np.uint8))
+    magnitude1 = Image.fromarray(magnitude.astype(np.uint8))
 
     if magnitude1.mode != 'RGB':
         magnitude1 = magnitude1.convert('RGB')
@@ -27,8 +27,15 @@ def applyFourier(self, image, compWidget):
     # phase1 = Image.fromarray(np.angle(fft))
     # real1 = Image.fromarray(np.real(fft))
     # imaginary1 = Image.fromarray(np.imag(fft))
-    plt.imshow(phase)
-    plt.show()
+    # print(np.abs(np.fft.ifftn(np.fft.fftshift(phase))))
+    imaginary = Image.fromarray(np.abs(np.fft.ifft2(imaginary)).astype(np.uint8), 'RGB')
+    Phase = Image.fromarray(np.abs(np.fft.ifft2(fft/magnitude)).astype(np.uint8), 'RGB')
+    Phase.save("Phase.png")
+    Phase.show()
+    imaginary.save('Imaginary.png')
+    imaginary.show()
+    # plt.imshow(np.abs(np.fft.ifft2(imaginary)))
+    # plt.show()
     qim = ImageQt(magnitude1)
     pix = QPixmap.fromImage(qim)
     pix = pix.scaled(230, 230, QtCore.Qt.IgnoreAspectRatio,
@@ -44,7 +51,7 @@ def applyFourier(self, image, compWidget):
 
 
 def read_image(self, filename, imageWidget, compWidget):
-    img = cv2.imread(filename)
+    img = Image.open(filename)
     pix = QPixmap(filename)
     pix = pix.scaled(230, 230, QtCore.Qt.KeepAspectRatio,
                      QtCore.Qt.FastTransformation)
@@ -64,7 +71,7 @@ def openConnect(self, imageWidget, compWidget, openImage):
 
 def browsefiles(self, imageWidget, compWidget):
     fname = QFileDialog.getOpenFileName(
-        self, "Open file", "../", " *.png;;" "*.jpg;;"
+        self, "Open file", "../", " *.png;;" "*.jpg;;" "*.jpeg;;"
     )
     file_path = fname[0]
 
