@@ -29,7 +29,7 @@ def applyFourier(self, image, compWidget):
     # imaginary1 = Image.fromarray(np.imag(fft))
     # print(np.abs(np.fft.ifftn(np.fft.fftshift(phase))))
     imaginary = Image.fromarray(np.abs(np.fft.ifft2(imaginary)).astype(np.uint8), 'RGB')
-    Phase = Image.fromarray(np.abs(np.fft.ifft2(phase)).astype(np.uint8), 'RGB')
+    Phase = Image.fromarray(np.abs(np.fft.ifft2(np.divide(fft,abs(fftshift)))).astype(np.uint8), 'RGB')
     Magnitude = Image.fromarray(np.abs(np.fft.ifft2(magnitude)).astype(np.uint8), 'RGB')
     Phase.save("Phase.png")
     Phase.show()
