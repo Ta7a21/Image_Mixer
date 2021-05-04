@@ -59,8 +59,7 @@ class image:
         if comp[0] == "Real" or comp[0] == "Imaginary":
             for i in range(2):
                 final_comp[i] = images[index[i]].comp[comp[i]] * \
-                    (ratio[i]/100.0) + images[1 -
-                                            index[i]].comp[comp[i]]*(1 - (ratio[i]/100.0))
+                    (ratio[i]) + images[1 - index[i]].comp[comp[i]]*(1 - (ratio[i]))
             ifft = np.fft.ifft2(final_comp[0] + final_comp[1])
 
         else:
@@ -78,7 +77,7 @@ class image:
             ifft = np.fft.ifft2(final_comp[0] * final_comp[1])
 
         ifft = np.real_if_close(ifft)
-        img = Image.fromarray((ifft).astype(np.uint8), "RGB")
+        img = Image.fromarray((ifft).astype(np.uint8))
         qim = ImageQt(img)
         pix = QPixmap.fromImage(qim)
         self.setImage(pix, widget)
