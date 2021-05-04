@@ -5,10 +5,13 @@ from PIL import Image
 from PIL.ImageQt import ImageQt
 import numpy as np
 import matplotlib.pyplot as plt
+import logging
 
+# log = logging.getLogger("__name__")
 
 class image:
 
+    logging.basicConfig(filename = "test.log",level = logging.DEBUG)
     def __init__(self, magnitude, phase, real, imaginary, imgSize, pixelSize):
         self.magnitude = magnitude
         self.phase = phase
@@ -102,17 +105,13 @@ def read_image(filename, imageWidget, index):
     img = Image.open(filename)
 
     imgSize = img.size[1]*img.size[0]
-    pixelSize = len(img.getdata()[0])
-
+    pixelSize = len(img.getdata()[0]) 
     if index == 0 and type(images[1]) != int:
         if imgSize != images[1].imgSize or pixelSize != images[1].pixelSize:
-            # showDialog()
             exit()
     elif index == 1 and type(images[0]) != int:
         if imgSize != images[0].imgSize or pixelSize != images[0].pixelSize:
-            # showDialog()
             exit()
-
     fft = np.fft.fft2(img)
     images[index] = image(np.abs(fft), np.angle(
         fft), np.real(fft), np.imag(fft), imgSize, pixelSize)
@@ -127,6 +126,7 @@ def browsefiles(self, imageWidget, index):
     )
     file_path = fname[0]
     read_image(file_path, imageWidget, index)
+    do_something()
 
 def openConnect(self, imageWidget, openImage, index):
     openImage.triggered.connect(lambda: browsefiles(self, imageWidget, index))
@@ -171,7 +171,6 @@ def comboboxChange(self, combobox):
 
     output(self)
 
-
 def output(self):
     outputTxt = self.setOutput.currentText()
     outputWidget = self.outputs[outputTxt]
@@ -181,9 +180,10 @@ def output(self):
     mixerImage = [int(self.mixerImage_1.currentText()[-1]) - 1,int(self.mixerImage_2.currentText()[-1]) - 1]
     mixerComp = [self.mixerComp_1.currentText(),self.mixerComp_2.currentText()]
     sliders = [self.slider_1.value()/100.0,self.slider_2.value()/100.0]
+    logging.debug(sliders[1])
 
     for i in range(2):
         img = images[mixerImage[i]].comp[mixerComp[i]]
-        final_img.comp[mixerComp[i]] = img
+        final_img.comp[mixerComp[i]] = img  
 
     final_img.mixer(sliders, mixerComp, mixerImage, outputWidget)
