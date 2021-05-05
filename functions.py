@@ -9,8 +9,12 @@ import logging
 
 # log = logging.getLogger("__name__")
 
+images = [0, 0]
+grayImages = [0, 0]
+
+
 class image:
-    def __init__(self, magnitude, phase, real, imaginary, imgSize):
+    def __init__(self, magnitude, phase, real, imaginary, imgSize, pixelSize):
         self.magnitude = magnitude
         self.phase = phase
         self.real = real
@@ -22,7 +26,7 @@ class image:
         else:
             self.uniMagnitude = 0
             self.uniPhase = 0
-        self.comp = {
+        self.compnts = {
             "Magnitude": self.magnitude,
             "Phase": self.phase,
             "Real": self.real,
@@ -31,13 +35,16 @@ class image:
             "Uniform Phase": self.uniPhase,
         }
         self.imgSize = imgSize
-        # self.pixelSize = pixelSize
+        self.pixelSize = pixelSize
 
     def fftComponent(self, combo, compWidget, index):
         resetCombo(combo)
         txt = combo.currentText()
-        comp = images[index].comp[txt]
-        fftcomp = Image.fromarray(np.abs(np.fft.ifft2(comp)).astype(np.uint8))
+        comp = grayImages[index].compnts[txt]
+        if txt == 'Imaginary':
+            comp = abs(comp)
+        plt.imsave("ay 7aga.jpg", comp*10, cmap='gray')
+        fftcomp = Image.fromarray((comp*10).astype(np.uint8))
         fftcomp.save(txt + ".jpg")
         qim = ImageQt(fftcomp)
         pix = QPixmap.fromImage(qim)
@@ -69,7 +76,8 @@ class image:
                 magInd = 0
 
             final_comp[phaseInd] = 1j * (
-                images[index[phaseInd]].comp[comp[phaseInd]] * (ratio[phaseInd])
+                images[index[phaseInd]].comp[comp[phaseInd]] *
+                (ratio[phaseInd])
                 + images[1 - index[phaseInd]].comp[comp[phaseInd]]
                 * (1 - ratio[phaseInd])
             )
@@ -88,47 +96,31 @@ class image:
         self.setImage(pix, widget)
 
 
-images = [0, 0]
-
-
-# def showDialog():
-#     msgBox = QMessageBox()
-#     msgBox.setIcon(QMessageBox.Critical)
-#     msgBox.setText("Select two images with the same size")
-#     msgBox.setWindowTitle("Error")
-#     msgBox.setStandardButtons(QMessageBox.Ok)
-#     return msgBox
-
-
-#    msgBox.exec()
-# #    if returnValue == QMessageBox.Ok:
-# #       print('OK clicked')
-
-
 def read_image(self, filename, imageWidget, index):
     img = Image.open(filename).convert('LA')
     grayImg = ImageOps.grayscale(img)
 
-    imgSize = grayImg.size[1] * grayImg.size[0]
-    # pixelSize = len(grayImg.getdata()[0])
+    imgSize = img.size[1] * img.size[0]
+    pixelSize = len(img.getdata()[0])
 
-    if index == 0 and type(images[1]) != int:
-        if imgSize != images[1].imgSize :
-            # showDialog()
-            QMessageBox.critical(self, "Error", "Select two images with the same size")
-            return
-    elif index == 1 and type(images[0]) != int:
-        if imgSize != images[0].imgSize :
-            # showDialog()
-            QMessageBox.critical(self, "Error", "Select two images with the same size")
-            return
+    for i in range(2):
+        if index == i and type(images[1 - i]) != int:
+            if imgSize != images[1 - i].imgSize or pixelSize != images[1 - i].pixelSize:
+                QMessageBox.critical(
+                    self, "Error", "Select two images with the same size")
+                return
 
-    fft = np.fft.fft2(grayImg)
-    fft = 
+    fft = np.fft.fft2(img)
     images[index] = image(
-        np.abs(fft), np.angle(fft), np.real(fft), np.imag(fft), imgSize
+        np.abs(fft), np.angle(fft), np.real(
+            fft), np.imag(fft), imgSize, pixelSize
     )
-
+    fftGray = np.fft.fftshift(np.fft.fft2(grayImg))
+    fftGrayLog = np.log(1 + fftGray)
+    grayImages[index] = image(
+        np.abs(fftGrayLog), np.angle(fftGray), np.real(
+            fftGrayLog), np.imag(fftGray), imgSize, 0
+    )
     pix = QPixmap(filename)
     images[index].setImage(pix, imageWidget)
 
@@ -145,11 +137,11 @@ def openConnect(self, imageWidget, openImage, index):
     openImage.clicked.connect(lambda: browsefiles(self, imageWidget, index))
 
 
-def imageCompConnect(self, imageComp):
+def mixerImagesConnect(self, imageComp):
     imageComp.activated[str].connect(lambda: output(self))
 
 
-def comboConnect(self, combo, compWidget, index):
+def fftCompConnect(self, combo, compWidget, index):
     combo.activated[str].connect(
         lambda: images[index].fftComponent(combo, compWidget, index)
     )
@@ -192,23 +184,26 @@ def resetCombo(combobox):
     index = combobox.findText("Choose Output")
     combobox.removeItem(index)
 
+
 def output(self):
     outputTxt = self.setOutput.currentText()
     outputWidget = self.outputs[outputTxt]
 
-    final_img = image(0, 0, 0, 0, 0)
+    final_img = image(0, 0, 0, 0, 0, 0)
 
     mixerImage = [
         int(self.mixerImage_1.currentText()[-1]) - 1,
         int(self.mixerImage_2.currentText()[-1]) - 1,
     ]
-    mixerComp = [self.mixerComp_1.currentText(), self.mixerComp_2.currentText()]
+    mixerComp = [self.mixerComp_1.currentText(
+    ), self.mixerComp_2.currentText()]
     sliders = [self.slider_1.value() / 100.0, self.slider_2.value() / 100.0]
     if 0 in images:
-        QMessageBox.critical(self, "Error", "Select two images to mix between them")
+        QMessageBox.critical(
+            self, "Error", "Select two images to mix between them")
         return
     resetCombo(self.setOutput)
     for i in range(2):
-        img = images[mixerImage[i]].comp[mixerComp[i]]
-        final_img.comp[mixerComp[i]] = img
+        img = images[mixerImage[i]].compnts[mixerComp[i]]
+        final_img.compnts[mixerComp[i]] = img
     final_img.mixer(sliders, mixerComp, mixerImage, outputWidget)
