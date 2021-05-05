@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1420</width>
-    <height>647</height>
+    <width>1148</width>
+    <height>591</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,14 +21,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1016</width>
-    <height>542</height>
+    <width>1148</width>
+    <height>591</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1420</width>
-    <height>720</height>
+    <width>16777215</width>
+    <height>16777215</height>
    </size>
   </property>
   <property name="font">
@@ -46,8 +46,8 @@ padding-left: 2px
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="10" column="3" alignment="Qt::AlignHCenter">
-     <widget class="QGraphicsView" name="output_1">
+    <item row="1" column="3">
+     <widget class="QLabel" name="compLabel_1">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -56,35 +56,31 @@ padding-left: 2px
       </property>
       <property name="minimumSize">
        <size>
-        <width>230</width>
-        <height>230</height>
+        <width>140</width>
+        <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>230</width>
-        <height>230</height>
+        <width>160</width>
+        <height>31</height>
        </size>
       </property>
-      <property name="sizeIncrement">
-       <size>
-        <width>10</width>
-        <height>10</height>
-       </size>
+      <property name="font">
+       <font>
+        <family>AlHor</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
       </property>
-      <property name="baseSize">
-       <size>
-        <width>210</width>
-        <height>210</height>
-       </size>
-      </property>
-      <property name="interactive">
-       <bool>true</bool>
+      <property name="text">
+       <string>Component 1:</string>
       </property>
      </widget>
     </item>
-    <item row="10" column="4">
-     <widget class="QGraphicsView" name="output_2">
+    <item row="7" column="0">
+     <widget class="QLabel" name="imageLabel_2">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -93,14 +89,47 @@ padding-left: 2px
       </property>
       <property name="minimumSize">
        <size>
-        <width>230</width>
-        <height>230</height>
+        <width>85</width>
+        <height>25</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>230</width>
-        <height>230</height>
+        <width>100</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>AlHor</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Image 2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" rowspan="6" colspan="2">
+     <widget class="QGraphicsView" name="image_1">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>240</width>
+        <height>240</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>240</width>
+        <height>240</height>
        </size>
       </property>
       <property name="sizeIncrement">
@@ -115,23 +144,625 @@ padding-left: 2px
         <height>210</height>
        </size>
       </property>
-      <property name="interactive">
-       <bool>true</bool>
+      <property name="styleSheet">
+       <string notr="true"/>
       </property>
+     </widget>
+    </item>
+    <item row="6" column="4" colspan="2">
+     <widget class="QSlider" name="slider_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="singleStep">
+       <number>5</number>
+      </property>
+      <property name="value">
+       <number>100</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="4" colspan="2">
+     <widget class="QComboBox" name="mixerComp_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>280</width>
+        <height>31</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Phase</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Uniform Phase</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QPushButton" name="actionImage_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>90</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Open Image</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="2">
+     <widget class="QGraphicsView" name="comp_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>240</width>
+        <height>240</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>240</width>
+        <height>240</height>
+       </size>
+      </property>
+      <property name="sizeIncrement">
+       <size>
+        <width>10</width>
+        <height>10</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>210</width>
+        <height>210</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2" rowspan="6">
+     <widget class="QGraphicsView" name="comp_1">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>240</width>
+        <height>240</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>240</width>
+        <height>240</height>
+       </size>
+      </property>
+      <property name="sizeIncrement">
+       <size>
+        <width>10</width>
+        <height>10</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>210</width>
+        <height>210</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="mixerLabel">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>155</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>170</width>
+        <height>31</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>AlHor</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Mixer output to:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="2">
+     <widget class="QComboBox" name="singleComp_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>240</width>
+        <height>25</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Choose Component</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Magnitude</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Phase</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Real</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Imaginary</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="4" column="4">
+     <widget class="QComboBox" name="mixerImage_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>75</width>
+        <height>31</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>230</width>
+        <height>31</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Image 1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Image 2</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="9" column="0" colspan="2">
+     <widget class="QGraphicsView" name="image_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>240</width>
+        <height>240</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>240</width>
+        <height>240</height>
+       </size>
+      </property>
+      <property name="sizeIncrement">
+       <size>
+        <width>10</width>
+        <height>10</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>210</width>
+        <height>210</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4">
+     <widget class="QComboBox" name="mixerImage_1">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>75</width>
+        <height>31</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>230</width>
+        <height>31</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Image 1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Image 2</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="6" column="3" alignment="Qt::AlignRight">
+     <widget class="QLabel" name="sliderValue_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>240</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>100 %</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
+     <widget class="QLabel" name="compLabel_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>140</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>160</width>
+        <height>31</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>AlHor</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Component 2:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4" colspan="2">
+     <widget class="QComboBox" name="setOutput">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>125</width>
+        <height>31</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>230</width>
+        <height>31</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Choose Output</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Output 1</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Output 2</string>
+       </property>
+      </item>
      </widget>
     </item>
     <item row="3" column="4" colspan="2">
-     <widget class="QComboBox" name="mixerComp_1">
+     <widget class="QSlider" name="slider_1">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
-        <width>260</width>
+        <width>160</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>300</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="singleStep">
+       <number>5</number>
+      </property>
+      <property name="value">
+       <number>100</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2" alignment="Qt::AlignBottom">
+     <widget class="QComboBox" name="singleComp_1">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
         <height>25</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>260</width>
+        <width>240</width>
         <height>25</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>Choose Component</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Magnitude</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Phase</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Real</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Imaginary</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="0" column="1" alignment="Qt::AlignBottom">
+     <widget class="QPushButton" name="actionImage_1">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>90</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Open Image</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" alignment="Qt::AlignBottom">
+     <widget class="QLabel" name="imageLabel_1">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>85</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>AlHor</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Image 1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3" alignment="Qt::AlignRight">
+     <widget class="QLabel" name="sliderValue_1">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>240</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>100 %</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="4" colspan="2">
+     <widget class="QComboBox" name="mixerComp_1">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>160</width>
+        <height>25</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>280</width>
+        <height>31</height>
        </size>
       </property>
       <item>
@@ -166,79 +797,10 @@ padding-left: 2px
       </item>
      </widget>
     </item>
-    <item row="0" column="0" alignment="Qt::AlignBottom">
-     <widget class="QLabel" name="imageLabel_1">
+    <item row="9" column="5">
+     <widget class="QGraphicsView" name="output_2">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>81</width>
-        <height>31</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>110</width>
-        <height>31</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>AlHor</family>
-        <pointsize>16</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Image 1</string>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="1" alignment="Qt::AlignHCenter">
-     <widget class="QComboBox" name="singleComp_2">
-      <property name="minimumSize">
-       <size>
-        <width>131</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>131</width>
-        <height>25</height>
-       </size>
-      </property>
-      <item>
-       <property name="text">
-        <string>Magnitude</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Phase</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Real</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Imaginary</string>
-       </property>
-      </item>
-     </widget>
-    </item>
-    <item row="2" column="0" rowspan="6">
-     <widget class="QGraphicsView" name="image_1">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -267,295 +829,18 @@ padding-left: 2px
         <height>210</height>
        </size>
       </property>
-      <property name="styleSheet">
-       <string notr="true"/>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="interactive">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="5" column="2" colspan="2" alignment="Qt::AlignRight">
-     <widget class="QLabel" name="compLabel_2">
+    <item row="9" column="4">
+     <widget class="QGraphicsView" name="output_1">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>175</width>
-        <height>31</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>AlHor</family>
-        <pointsize>16</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Component 2:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="4">
-     <widget class="QComboBox" name="mixerImage_2">
-      <item>
-       <property name="text">
-        <string>Image 1</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Image 2</string>
-       </property>
-      </item>
-     </widget>
-    </item>
-    <item row="9" column="3" alignment="Qt::AlignLeft">
-     <widget class="QLabel" name="outputLabel_1">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>120</width>
-        <height>31</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>AlHor</family>
-        <pointsize>16</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Output 1</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="4" colspan="2">
-     <widget class="QComboBox" name="mixerComp_2">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>260</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>260</width>
-        <height>25</height>
-       </size>
-      </property>
-      <item>
-       <property name="text">
-        <string>Phase</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Uniform Phase</string>
-       </property>
-      </item>
-     </widget>
-    </item>
-    <item row="0" column="1" alignment="Qt::AlignHCenter|Qt::AlignBottom">
-     <widget class="QComboBox" name="singleComp_1">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>131</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>131</width>
-        <height>25</height>
-       </size>
-      </property>
-      <item>
-       <property name="text">
-        <string>Magnitude</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Phase</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Real</string>
-       </property>        
-      </item>
-      <item>
-       <property name="text">
-        <string>Imaginary</string>
-       </property>
-      </item>
-     </widget>
-    </item>
-    <item row="2" column="4">
-     <widget class="QComboBox" name="mixerImage_1">
-      <property name="minimumSize">
-       <size>
-        <width>101</width>
-        <height>25</height>
-       </size>
-      </property>
-      <item>
-       <property name="text">
-        <string>Image 1</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Image 2</string>
-       </property>
-      </item>
-     </widget>
-    </item>
-    <item row="2" column="3" alignment="Qt::AlignRight">
-     <widget class="QLabel" name="compLabel_1">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>175</width>
-        <height>31</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>AlHor</family>
-        <pointsize>16</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Component 1:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3" alignment="Qt::AlignRight">
-     <widget class="QLabel" name="mixerLabel">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>202</width>
-        <height>31</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>AlHor</family>
-        <pointsize>16</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Mixer output to:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="4">
-     <widget class="QComboBox" name="setOutput">
-      <property name="minimumSize">
-       <size>
-        <width>101</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>101</width>
-        <height>25</height>
-       </size>
-      </property>
-      <item>
-       <property name="text">
-        <string>Output 1</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Output 2</string>
-       </property>
-      </item>
-     </widget>
-    </item>
-    <item row="4" column="3" alignment="Qt::AlignRight">
-     <widget class="QLabel" name="sliderValue_1">
-      <property name="minimumSize">
-       <size>
-        <width>27</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>100</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>100 %</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="3" alignment="Qt::AlignRight">
-     <widget class="QLabel" name="sliderValue_2">
-      <property name="minimumSize">
-       <size>
-        <width>27</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>100</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>100 %</string>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="0">
-     <widget class="QGraphicsView" name="image_2">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -584,71 +869,12 @@ padding-left: 2px
         <height>210</height>
        </size>
       </property>
-     </widget>
-    </item>
-    <item row="7" column="4">
-     <widget class="QSlider" name="slider_2">
-      <property name="minimumSize">
-       <size>
-        <width>200</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>441</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="maximum">
-       <number>100</number>
-      </property>
-      <property name="singleStep">
-       <number>5</number>
-      </property>
-      <property name="value">
-       <number>100</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+      <property name="interactive">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="10" column="1">
-     <widget class="QGraphicsView" name="comp_2">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>240</width>
-        <height>240</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>240</width>
-        <height>240</height>
-       </size>
-      </property>
-      <property name="sizeIncrement">
-       <size>
-        <width>10</width>
-        <height>10</height>
-       </size>
-      </property>
-      <property name="baseSize">
-       <size>
-        <width>210</width>
-        <height>210</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="4" alignment="Qt::AlignLeft">
+    <item row="7" column="5">
      <widget class="QLabel" name="outputLabel_2">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -656,9 +882,15 @@ padding-left: 2px
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>85</width>
+        <height>31</height>
+       </size>
+      </property>
       <property name="maximumSize">
        <size>
-        <width>120</width>
+        <width>240</width>
         <height>31</height>
        </size>
       </property>
@@ -675,42 +907,8 @@ padding-left: 2px
       </property>
      </widget>
     </item>
-    <item row="2" column="1" rowspan="6">
-     <widget class="QGraphicsView" name="comp_1">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>240</width>
-        <height>240</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>240</width>
-        <height>240</height>
-       </size>
-      </property>
-      <property name="sizeIncrement">
-       <size>
-        <width>10</width>
-        <height>10</height>
-       </size>
-      </property>
-      <property name="baseSize">
-       <size>
-        <width>210</width>
-        <height>210</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="0">
-     <widget class="QLabel" name="imageLabel_2">
+    <item row="7" column="4">
+     <widget class="QLabel" name="outputLabel_1">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -719,14 +917,14 @@ padding-left: 2px
       </property>
       <property name="minimumSize">
        <size>
-        <width>81</width>
-        <height>31</height>
+        <width>85</width>
+        <height>25</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>110</width>
-        <height>31</height>
+        <width>240</width>
+        <height>25</height>
        </size>
       </property>
       <property name="font">
@@ -738,87 +936,13 @@ padding-left: 2px
        </font>
       </property>
       <property name="text">
-       <string>Image 2</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="4">
-     <widget class="QSlider" name="slider_1">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>200</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>441</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="maximum">
-       <number>100</number>
-      </property>
-      <property name="singleStep">
-       <number>5</number>
-      </property>
-      <property name="value">
-       <number>100</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+       <string>Output 1</string>
       </property>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1420</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <widget class="QMenu" name="menuOpen">
-     <property name="title">
-      <string>Open</string>
-     </property>
-     <addaction name="actionImage_1"/>
-     <addaction name="actionImage_2"/>
-    </widget>
-    <addaction name="menuOpen"/>
-    <addaction name="actionExit"/>
-   </widget>
-   <addaction name="menuFile"/>
-  </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionExit">
-   <property name="text">
-    <string>Exit</string>
-   </property>
-  </action>
-  <action name="actionImage_1">
-   <property name="text">
-    <string>Image 1</string>
-   </property>
-  </action>
-  <action name="actionImage_2">
-   <property name="text">
-    <string>Image 2</string>
-   </property>
-  </action>
  </widget>
  <resources/>
  <connections/>
