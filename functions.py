@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
-from PIL import Image, ImageOps
+from PIL import Image as ImagePil, ImageOps
 from PIL.ImageQt import ImageQt
 import numpy as np
 import matplotlib.pyplot as plt
@@ -53,7 +53,7 @@ class Image:
         if txt == "Imaginary":
             compnt = abs(compnt)
         # plt.imsave("ay 7aga.jpg", compnt * 10, cmap="gray")
-        fftcompnt = Image.fromarray((compnt * 10).astype(np.uint8))
+        fftcompnt = ImagePil.fromarray((compnt * 10).astype(np.uint8))
         # fftcompnt.save(txt + ".jpg")
         qtImage = ImageQt(fftcompnt)
         pixelMap = QPixmap.fromImage(qtImage)
@@ -91,7 +91,7 @@ class Image:
 
         ifft = np.real_if_close(ifft)
 
-        img = Image.fromarray((ifft).astype(np.uint8))
+        img = ImagePil.fromarray((ifft).astype(np.uint8))
         qtImage = ImageQt(img)
         pixelMap = QPixmap.fromImage(qtImage)
         self.setImage(pixelMap, widget)
@@ -114,7 +114,7 @@ for i in range(2):
 
 
 def read_image(self, filename, imageWidget, index):
-    img = Image.open(filename)
+    img = ImagePil.open(filename)
     logging.info(f"User choose image{index+1} from {filename}")
     grayImg = ImageOps.grayscale(img)
 
