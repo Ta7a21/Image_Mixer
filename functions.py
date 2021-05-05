@@ -97,7 +97,7 @@ class image:
 
 
 def read_image(self, filename, imageWidget, index):
-    img = Image.open(filename).convert('LA')
+    img = Image.open(filename)
     grayImg = ImageOps.grayscale(img)
 
     imgSize = img.size[1] * img.size[0]

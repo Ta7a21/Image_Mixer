@@ -566,11 +566,6 @@ padding-left: 2px
       </property>
       <item>
        <property name="text">
-        <string>Choose Output</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
         <string>Output 1</string>
        </property>
       </item>

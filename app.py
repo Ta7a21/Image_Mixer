@@ -24,6 +24,8 @@ class Ui(QtWidgets.QMainWindow):
             tools.outComboConnect(self, mixers[i])
             tools.mixerImagesConnect(self, imageComp[i])
         self.setOutput.activated[str].connect(lambda: tools.output(self))
+        self.setOutput.setCurrentIndex(-1)
+        # self.setOutput.setPlaceholderText("comp")
 
 
 app = QtWidgets.QApplication(sys.argv)
