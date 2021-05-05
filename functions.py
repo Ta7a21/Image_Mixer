@@ -6,9 +6,12 @@ from PIL.ImageQt import ImageQt
 import numpy as np
 import matplotlib.pyplot as plt
 import logging
+import logging.config
+import json
+from getSystemInfo import getSystemInfo
 
-# log = logging.getLogger("__name__")
-
+logging.basicConfig(filename='log.txt', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=0)
+logging.info(f"System info: {json.loads(getSystemInfo())}")
 
 class image:
     def __init__(self, magnitude, phase, real, imaginary, imgSize, pixelSize):
@@ -33,6 +36,7 @@ class image:
             QMessageBox.critical(
                 window, "Error", "Select an image to view its component"
             )
+            logging.warning("No image selected")
             return
         # resetCombo(combo)
         txt = combo.currentText()
@@ -110,6 +114,7 @@ for i in range(2):
 
 def read_image(self, filename, imageWidget, index):
     img = Image.open(filename)
+    logging.info(f"User choose image{index+1} from {filename}")
     grayImg = ImageOps.grayscale(img)
 
     imgSize = img.size[1] * img.size[0]
@@ -121,6 +126,7 @@ def read_image(self, filename, imageWidget, index):
                 QMessageBox.critical(
                     self, "Error", "Select two images with the same size"
                 )
+                logging.critical('User selected images with different sizes.')
                 return
 
     fft = np.fft.fft2(img)
@@ -148,7 +154,16 @@ def browsefiles(self, imageWidget, index):
         self, "Open file", "../", "*.jpg;;" " *.png;;" "*.jpeg;;"
     )
     file_path = fname[0]
-    read_image(self, file_path, imageWidget, index)
+    if fname[0].endswith('.jpeg') or fname[0].endswith('.png') or fname[0].endswith('.jpg'):
+        read_image(self, file_path, imageWidget, index)
+    else:
+        QMessageBox.critical(
+                    self, "Error", "Invalid format."
+                )
+        logging.warning(f'The user did not select a valid file format. {fname[0]}')
+        return
+
+
 
 
 def openConnect(self, imageWidget, openImage, index):
@@ -205,6 +220,12 @@ def comboboxChange(self, combobox):
 
 def output(self):
     outputTxt = self.setOutput.currentText()
+    if outputTxt == '':
+        QMessageBox.critical(
+                    self, "Error", "Select an output slot."
+                )
+        logging.critical('No output slot selected')
+        return
     outputWidget = self.outputs[outputTxt]
 
     final_img = image(0, 0, 0, 0, 0, 0)
@@ -219,6 +240,7 @@ def output(self):
         if not img.imgSize:
             self.setOutput.setCurrentIndex(-1)
             QMessageBox.critical(self, "Error", "Select two images to mix between them")
+            logging.error('The user tried to mix only one image')
             return
     # resetCombo(self.setOutput)
     for i in range(2):
