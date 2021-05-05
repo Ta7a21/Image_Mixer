@@ -59,35 +59,35 @@ class image:
         scene.addItem(item)
         Widget.setScene(scene)
 
-    def mixer(self, ratio, comp, index, widget):
-        final_comp = [0, 0]
+    def mixer(self, ratio, compnts, index, widget):
+        final_compnts = [0, 0]
         phaseInd = 0
         magInd = 1
-        if comp[0] == "Real" or comp[0] == "Imaginary":
+        if compnts[0] == "Real" or compnts[0] == "Imaginary":
             for i in range(2):
-                final_comp[i] = images[index[i]].comp[comp[i]] * (ratio[i]) + images[
+                final_compnts[i] = images[index[i]].compnts[compnts[i]] * (ratio[i]) + images[
                     1 - index[i]
-                ].comp[comp[i]] * (1 - (ratio[i]))
-            ifft = np.fft.ifft2(final_comp[0] + final_comp[1])
+                ].compnts[compnts[i]] * (1 - (ratio[i]))
+            ifft = np.fft.ifft2(final_compnts[0] + final_compnts[1])
 
         else:
-            if comp[0] == "Magnitude" or comp[0] == "Uniform Magnitude":
+            if compnts[0] == "Magnitude" or compnts[0] == "Uniform Magnitude":
                 phaseInd = 1
                 magInd = 0
 
-            final_comp[phaseInd] = 1j * (
-                images[index[phaseInd]].comp[comp[phaseInd]] *
+            final_compnts[phaseInd] = 1j * (
+                images[index[phaseInd]].compnts[compnts[phaseInd]] *
                 (ratio[phaseInd])
-                + images[1 - index[phaseInd]].comp[comp[phaseInd]]
+                + images[1 - index[phaseInd]].compnts[compnts[phaseInd]]
                 * (1 - ratio[phaseInd])
             )
-            final_comp[phaseInd] = np.exp(final_comp[phaseInd])
+            final_compnts[phaseInd] = np.exp(final_compnts[phaseInd])
 
-            final_comp[magInd] = images[index[magInd]].comp[comp[magInd]] * (
+            final_compnts[magInd] = images[index[magInd]].compnts[compnts[magInd]] * (
                 ratio[magInd]
-            ) + images[1 - index[magInd]].comp[comp[magInd]] * (1 - ratio[magInd])
+            ) + images[1 - index[magInd]].compnts[compnts[magInd]] * (1 - ratio[magInd])
 
-            ifft = np.fft.ifft2(final_comp[0] * final_comp[1])
+            ifft = np.fft.ifft2(final_compnts[0] * final_compnts[1])
 
         ifft = np.real_if_close(ifft)
         img = Image.fromarray((ifft).astype(np.uint8))
@@ -115,6 +115,7 @@ def read_image(self, filename, imageWidget, index):
         np.abs(fft), np.angle(fft), np.real(
             fft), np.imag(fft), imgSize, pixelSize
     )
+
     fftGray = np.fft.fftshift(np.fft.fft2(grayImg))
     fftGrayLog = np.log(1 + fftGray)
     grayImages[index] = image(
