@@ -37,9 +37,7 @@ class image:
         resetCombo(combo)
         txt = combo.currentText()
         comp = images[index].comp[txt]
-        print(comp)
-        plt.imsave("ay 7aga.jpg",comp)
-        fftcomp = Image.fromarray((comp).astype(np.uint8))
+        fftcomp = Image.fromarray(np.abs(np.fft.ifft2(comp)).astype(np.uint8))
         fftcomp.save(txt + ".jpg")
         qim = ImageQt(fftcomp)
         pix = QPixmap.fromImage(qim)
@@ -54,34 +52,34 @@ class image:
         scene.addItem(item)
         Widget.setScene(scene)
 
-    def mixer(self, ratio, compnts, index, widget):
-        final_compnts = [0, 0]
+    def mixer(self, ratio, comp, index, widget):
+        final_comp = [0, 0]
         phaseInd = 0
         magInd = 1
-        if compnts[0] == "Real" or compnts[0] == "Imaginary":
+        if comp[0] == "Real" or comp[0] == "Imaginary":
             for i in range(2):
-                final_compnts[i] = images[index[i]].compnts[compnts[i]] * (ratio[i]) + images[
+                final_comp[i] = images[index[i]].comp[comp[i]] * (ratio[i]) + images[
                     1 - index[i]
-                ].compnts[compnts[i]] * (1 - (ratio[i]))
-            ifft = np.fft.ifft2(final_compnts[0] + final_compnts[1])
+                ].comp[comp[i]] * (1 - (ratio[i]))
+            ifft = np.fft.ifft2(final_comp[0] + final_comp[1])
 
         else:
-            if compnts[0] == "Magnitude" or compnts[0] == "Uniform Magnitude":
+            if comp[0] == "Magnitude" or comp[0] == "Uniform Magnitude":
                 phaseInd = 1
                 magInd = 0
 
-            final_compnts[phaseInd] = 1j * (
-                images[index[phaseInd]].compnts[compnts[phaseInd]] * (ratio[phaseInd])
-                + images[1 - index[phaseInd]].compnts[compnts[phaseInd]]
+            final_comp[phaseInd] = 1j * (
+                images[index[phaseInd]].comp[comp[phaseInd]] * (ratio[phaseInd])
+                + images[1 - index[phaseInd]].comp[comp[phaseInd]]
                 * (1 - ratio[phaseInd])
             )
-            final_compnts[phaseInd] = np.exp(final_compnts[phaseInd])
+            final_comp[phaseInd] = np.exp(final_comp[phaseInd])
 
-            final_compnts[magInd] = images[index[magInd]].compnts[compnts[magInd]] * (
+            final_comp[magInd] = images[index[magInd]].comp[comp[magInd]] * (
                 ratio[magInd]
-            ) + images[1 - index[magInd]].compnts[compnts[magInd]] * (1 - ratio[magInd])
+            ) + images[1 - index[magInd]].comp[comp[magInd]] * (1 - ratio[magInd])
 
-            ifft = np.fft.ifft2(final_compnts[0] * final_compnts[1])
+            ifft = np.fft.ifft2(final_comp[0] * final_comp[1])
 
         ifft = np.real_if_close(ifft)
         img = Image.fromarray((ifft).astype(np.uint8))
@@ -108,7 +106,7 @@ images = [0, 0]
 
 
 def read_image(self, filename, imageWidget, index):
-    img = Image.open(filename)
+    img = Image.open(filename).convert('LA')
     grayImg = ImageOps.grayscale(img)
 
     imgSize = grayImg.size[1] * grayImg.size[0]
@@ -126,7 +124,7 @@ def read_image(self, filename, imageWidget, index):
             return
 
     fft = np.fft.fft2(grayImg)
-    fft = np.log (1 + np.fft.fftshift(fft))
+    fft = 
     images[index] = image(
         np.abs(fft), np.angle(fft), np.real(fft), np.imag(fft), imgSize
     )
