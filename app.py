@@ -19,10 +19,10 @@ class Ui(QtWidgets.QMainWindow):
         self.outputs = {"Output 1": self.output_1, "Output 2": self.output_2}
         for i in range(2):
             tools.openConnect(self, images[i], openImages[i], i)
-            tools.comboConnect(self, combo[i], components[i], i)
+            tools.fftCompConnect(self, combo[i], components[i], i)
             tools.sliderConnect(self, sliders[i], sliderLabels[i])
             tools.outComboConnect(self, mixers[i])
-            tools.imageCompConnect(self, imageComp[i])
+            tools.mixerImagesConnect(self, imageComp[i])
         self.setOutput.activated[str].connect(lambda: tools.output(self))
 
 

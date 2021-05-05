@@ -9,8 +9,10 @@ import logging
 
 # log = logging.getLogger("__name__")
 
+images = [0, 0]
+grayImages = [0, 0]
 class image:
-    def __init__(self, magnitude, phase, real, imaginary, imgSize):
+    def __init__(self, magnitude, phase, real, imaginary, imgSize, pixelSize):
         self.magnitude = magnitude
         self.phase = phase
         self.real = real
@@ -22,7 +24,7 @@ class image:
         else:
             self.uniMagnitude = 0
             self.uniPhase = 0
-        self.comp = {
+        self.compnts = {
             "Magnitude": self.magnitude,
             "Phase": self.phase,
             "Real": self.real,
@@ -31,15 +33,17 @@ class image:
             "Uniform Phase": self.uniPhase,
         }
         self.imgSize = imgSize
-        # self.pixelSize = pixelSize
+        self.pixelSize = pixelSize
 
     def fftComponent(self, combo, compWidget, index):
         resetCombo(combo)
         txt = combo.currentText()
-        comp = images[index].comp[txt]
+        comp = grayImages[index].compnts[txt]
+        if txt == 'Imaginary':
+            comp = abs(comp)
         print(comp)
-        plt.imsave("ay 7aga.jpg",comp)
-        fftcomp = Image.fromarray((comp).astype(np.uint8))
+        plt.imsave("ay 7aga.jpg",comp*10, cmap='gray')
+        fftcomp = Image.fromarray((comp*10).astype(np.uint8))
         fftcomp.save(txt + ".jpg")
         qim = ImageQt(fftcomp)
         pix = QPixmap.fromImage(qim)
@@ -90,7 +94,6 @@ class image:
         self.setImage(pix, widget)
 
 
-images = [0, 0]
 
 
 # def showDialog():
@@ -111,26 +114,29 @@ def read_image(self, filename, imageWidget, index):
     img = Image.open(filename)
     grayImg = ImageOps.grayscale(img)
 
-    imgSize = grayImg.size[1] * grayImg.size[0]
-    # pixelSize = len(grayImg.getdata()[0])
+    imgSize = img.size[1] * img.size[0]
+    pixelSize = len(img.getdata()[0])
 
     if index == 0 and type(images[1]) != int:
-        if imgSize != images[1].imgSize :
+        if imgSize != images[1].imgSize or pixelSize != images[1].pixelSize:
             # showDialog()
             QMessageBox.critical(self, "Error", "Select two images with the same size")
             return
     elif index == 1 and type(images[0]) != int:
-        if imgSize != images[0].imgSize :
+        if imgSize != images[0].imgSize or pixelSize != images[0].pixelSize :
             # showDialog()
             QMessageBox.critical(self, "Error", "Select two images with the same size")
             return
 
-    fft = np.fft.fft2(grayImg)
-    fft = np.log (1 + np.fft.fftshift(fft))
+    fft = np.fft.fft2(img)
     images[index] = image(
-        np.abs(fft), np.angle(fft), np.real(fft), np.imag(fft), imgSize
+        np.abs(fft), np.angle(fft), np.real(fft), np.imag(fft), imgSize, pixelSize
     )
-
+    fftGray = np.fft.fft2(grayImg)
+    fftGray = np.log (1 + np.fft.fftshift(fftGray))
+    grayImages[index] = image(
+        np.abs(fftGray), np.angle(fftGray), np.real(fftGray), np.imag(fftGray), imgSize, 0
+    )
     pix = QPixmap(filename)
     images[index].setImage(pix, imageWidget)
 
@@ -147,11 +153,11 @@ def openConnect(self, imageWidget, openImage, index):
     openImage.clicked.connect(lambda: browsefiles(self, imageWidget, index))
 
 
-def imageCompConnect(self, imageComp):
+def mixerImagesConnect(self, imageComp):
     imageComp.activated[str].connect(lambda: output(self))
 
 
-def comboConnect(self, combo, compWidget, index):
+def fftCompConnect(self, combo, compWidget, index):
     combo.activated[str].connect(
         lambda: images[index].fftComponent(combo, compWidget, index)
     )
@@ -198,7 +204,7 @@ def output(self):
     outputTxt = self.setOutput.currentText()
     outputWidget = self.outputs[outputTxt]
 
-    final_img = image(0, 0, 0, 0, 0)
+    final_img = image(0, 0, 0, 0, 0, 0)
 
     mixerImage = [
         int(self.mixerImage_1.currentText()[-1]) - 1,
@@ -211,6 +217,6 @@ def output(self):
         return
     resetCombo(self.setOutput)
     for i in range(2):
-        img = images[mixerImage[i]].comp[mixerComp[i]]
-        final_img.comp[mixerComp[i]] = img
+        img = images[mixerImage[i]].compnts[mixerComp[i]]
+        final_img.compnts[mixerComp[i]] = img
     final_img.mixer(sliders, mixerComp, mixerImage, outputWidget)
