@@ -18,12 +18,17 @@ class Ui(QtWidgets.QMainWindow):
         mixers = [self.mixerComp_1, self.mixerComp_2]
         self.outputs = {"Output 1": self.output_1, "Output 2": self.output_2}
         for i in range(2):
+            combo[i].setCurrentIndex(-1)
             tools.openConnect(self, images[i], openImages[i], i)
             tools.fftCompConnect(self, combo[i], components[i], i)
             tools.sliderConnect(self, sliders[i], sliderLabels[i])
             tools.outComboConnect(self, mixers[i])
             tools.mixerImagesConnect(self, imageComp[i])
+        self.setOutput.setCurrentIndex(-1)
         self.setOutput.activated[str].connect(lambda: tools.output(self))
+        self.actionReset.triggered.connect(
+            lambda: tools.reset(self, images, components, combo, self.outputs)
+        )
 
 
 app = QtWidgets.QApplication(sys.argv)
