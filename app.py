@@ -7,7 +7,6 @@ class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()
         uic.loadUi("app.ui", self)
-
         components = [self.comp_1, self.comp_2]
         comboBoxes = [self.singleComp_1, self.singleComp_2]
         images = [self.image_1, self.image_2]

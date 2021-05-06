@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
-from PIL import Image, ImageOps
+from PIL import Image as ImagePil, ImageOps
 from PIL.ImageQt import ImageQt
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,58 +14,63 @@ logging.basicConfig(
     filename="log.txt",
     filemode="w",
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=0,
+    level=20,
 )
 logging.info(f"System info: {json.loads(getSystemInfo())}")
 
 
-class image:
+class Image:
     def __init__(self, magnitude, phase, real, imaginary, imgSize, pixelSize):
         self.magnitude = magnitude
         self.phase = phase
         self.real = real
         self.imaginary = imaginary * 1j
         self.compnts = {}
-        self.uniMagnitude = np.array((magnitude * 0) + 50) if type(real) != int else 0
+        self.uniMagnitude = np.array((magnitude * 0) + 1) if type(real) != int else 0
         self.uniPhase = np.array(phase * 0) if type(real) != int else 0
         self.imgSize = imgSize
         self.pixelSize = pixelSize
 
+    def dictInit(self):
+        self.compnts = {
+            "Magnitude": self.magnitude,
+            "Phase": self.phase,
+            "Real": self.real,
+            "Imaginary": self.imaginary,
+            "Uniform Magnitude": self.uniMagnitude,
+            "Uniform Phase": self.uniPhase,
+        }
+
     def fftComponent(self, window, comboBox, compntWidget, index):
-        if not images[index].imgSize:
+        logging.info(f"The size of image{index+1} is {images[index].imgSize}.")
+        if images[index].imgSize == 0:
             comboBox.setCurrentIndex(-1)
             errorMssg(window, "Select an image to view its component.")
-            logging.warning("No image selected")
+            logging.warning("No image selected.")
             return
+
         txt = comboBox.currentText()
         compnt = grayImages[index].compnts[txt]
         if txt == "Imaginary":
             compnt = abs(compnt)
         # plt.imsave("ay 7aga.jpg", compnt * 10, cmap="gray")
-        fftcompnt = Image.fromarray((compnt * 10).astype(np.uint8))
+        fftcompnt = ImagePil.fromarray((compnt * 10).astype(np.uint8))
         # fftcompnt.save(txt + ".jpg")
         qtImage = ImageQt(fftcompnt)
         pixelMap = QPixmap.fromImage(qtImage)
         self.setImage(pixelMap, compntWidget)
 
-    def setImage(self, pixelMap, widget):
-        pixelMap = pixelMap.scaled(
-            230, 230, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.FastTransformation
-        )
-        item = QtWidgets.QGraphicsPixmapItem(pixelMap)
-        scene = QtWidgets.QGraphicsScene()
-        scene.addItem(item)
-        widget.setScene(scene)
-
     def mixer(self, ratio, compnts, index, widget):
         final_compnts = [0, 0]
         phaseInd = 0
         magInd = 1
+
         if compnts[0] == "Real" or compnts[0] == "Imaginary":
             for i in range(2):
                 final_compnts[i] = images[index[i]].compnts[compnts[i]] * (
                     ratio[i]
                 ) + images[1 - index[i]].compnts[compnts[i]] * (1 - (ratio[i]))
+
             ifft = np.fft.ifft2(final_compnts[0] + final_compnts[1])
 
         else:
@@ -79,7 +84,6 @@ class image:
                 * (1 - ratio[phaseInd])
             )
             final_compnts[phaseInd] = np.exp(final_compnts[phaseInd])
-
             final_compnts[magInd] = images[index[magInd]].compnts[compnts[magInd]] * (
                 ratio[magInd]
             ) + images[1 - index[magInd]].compnts[compnts[magInd]] * (1 - ratio[magInd])
@@ -87,37 +91,37 @@ class image:
             ifft = np.fft.ifft2(final_compnts[0] * final_compnts[1])
 
         ifft = np.real_if_close(ifft)
-        img = Image.fromarray((ifft).astype(np.uint8))
+
+        img = ImagePil.fromarray((ifft).astype(np.uint8))
         qtImage = ImageQt(img)
         pixelMap = QPixmap.fromImage(qtImage)
         self.setImage(pixelMap, widget)
 
-    def dictInit(self):
-        self.compnts = {
-            "Magnitude": self.magnitude,
-            "Phase": self.phase,
-            "Real": self.real,
-            "Imaginary": self.imaginary,
-            "Uniform Magnitude": self.uniMagnitude,
-            "Uniform Phase": self.uniPhase,
-        }
+    def setImage(self, pixelMap, widget):
+        pixelMap = pixelMap.scaled(
+            230, 230, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.FastTransformation
+        )
+        item = QtWidgets.QGraphicsPixmapItem(pixelMap)
+        scene = QtWidgets.QGraphicsScene()
+        scene.addItem(item)
+        widget.setScene(scene)
 
 
 images = []
 grayImages = []
 for i in range(2):
-    images.append(image(0, 0, 0, 0, 0, 0))
+    images.append(Image(0, 0, 0, 0, 0, 0))
     grayImages.append(0)
 
 
 def read_image(self, filename, imageWidget, index):
-    img = Image.open(filename)
-    logging.info(f"User choose image{index+1} from {filename}")
+    img = ImagePil.open(filename)
+    logging.info(f"User choose image{index+1} from {filename}.")
     grayImg = ImageOps.grayscale(img)
 
     imgSize = img.size[1] * img.size[0]
     pixelSize = len(img.getdata()[0])
-
+    logging.info(f"image{[index+1]} is of size ({img.size[0]},{img.size[1]}) and an alpha of length {pixelSize}.")
     for i in range(2):
         if (
             index == i
@@ -127,17 +131,17 @@ def read_image(self, filename, imageWidget, index):
             )
         ):
             errorMssg(self, "Select two images with the same size.")
-            logging.critical("User selected images with different sizes")
+            logging.critical("User selected images with different sizes or alpha values.")
             return
 
     fft = np.fft.fft2(img)
-    images[index] = image(
+    images[index] = Image(
         np.abs(fft), np.angle(fft), np.real(fft), np.imag(fft), imgSize, pixelSize
     )
     images[index].dictInit()
     fftGray = np.fft.fftshift(np.fft.fft2(grayImg))
-    fftGrayLog = np.log(1 + fftGray)
-    grayImages[index] = image(
+    fftGrayLog = 20*(np.log(fftGray))
+    grayImages[index] = Image(
         np.abs(fftGrayLog),
         np.angle(fftGray),
         np.real(fftGrayLog),
@@ -219,7 +223,7 @@ def output(self):
         return
     outputWidget = self.outputs[outputTxt]
 
-    final_img = image(0, 0, 0, 0, 0, 0)
+    final_img = Image(0, 0, 0, 0, 0, 0)
 
     mixerImages = [
         int(self.mixerImage_1.currentText()[-1]) - 1,
