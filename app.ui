@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1148</width>
-    <height>591</height>
+    <width>1297</width>
+    <height>686</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -207,7 +207,7 @@ padding-left: 2px
       </property>
       <property name="maximumSize">
        <size>
-        <width>160</width>
+        <width>190</width>
         <height>31</height>
        </size>
       </property>
@@ -247,7 +247,7 @@ padding-left: 2px
       <property name="editable">
        <bool>false</bool>
       </property>
-      <property name="placeholderText">
+      <property name="placeholderText" stdset="0">
        <string>jnkkj</string>
       </property>
       <item>
@@ -364,7 +364,7 @@ padding-left: 2px
       <property name="editable">
        <bool>false</bool>
       </property>
-      <property name="placeholderText">
+      <property name="placeholderText" stdset="0">
        <string/>
       </property>
       <item>
@@ -439,7 +439,7 @@ padding-left: 2px
       </property>
       <property name="maximumSize">
        <size>
-        <width>170</width>
+        <width>220</width>
         <height>31</height>
        </size>
       </property>
@@ -653,7 +653,7 @@ padding-left: 2px
       </property>
       <property name="maximumSize">
        <size>
-        <width>100</width>
+        <width>120</width>
         <height>25</height>
        </size>
       </property>
@@ -693,7 +693,7 @@ padding-left: 2px
       <property name="editable">
        <bool>false</bool>
       </property>
-      <property name="placeholderText">
+      <property name="placeholderText" stdset="0">
        <string>aasasasas</string>
       </property>
       <item>
@@ -757,7 +757,7 @@ padding-left: 2px
       </property>
       <property name="maximumSize">
        <size>
-        <width>160</width>
+        <width>190</width>
         <height>31</height>
        </size>
       </property>
@@ -790,7 +790,7 @@ padding-left: 2px
       </property>
       <property name="maximumSize">
        <size>
-        <width>100</width>
+        <width>120</width>
         <height>25</height>
        </size>
       </property>
