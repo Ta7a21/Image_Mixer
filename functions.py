@@ -14,7 +14,7 @@ logging.basicConfig(
     filename="log.txt",
     filemode="w",
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=0,
+    level=20,
 )
 logging.info(f"System info: {json.loads(getSystemInfo())}")
 
@@ -26,7 +26,7 @@ class Image:
         self.real = real
         self.imaginary = imaginary * 1j
         self.compnts = {}
-        self.uniMagnitude = np.array((magnitude * 0) + 50) if type(real) != int else 0
+        self.uniMagnitude = np.array((magnitude * 0) + 1) if type(real) != int else 0
         self.uniPhase = np.array(phase * 0) if type(real) != int else 0
         self.imgSize = imgSize
         self.pixelSize = pixelSize
@@ -42,10 +42,11 @@ class Image:
         }
 
     def fftComponent(self, window, comboBox, compntWidget, index):
+        logging.info(f"The size of image{index+1} is {images[index].imgSize}.")
         if images[index].imgSize == 0:
             comboBox.setCurrentIndex(-1)
             errorMssg(window, "Select an image to view its component.")
-            logging.warning("No image selected")
+            logging.warning("No image selected.")
             return
 
         txt = comboBox.currentText()
@@ -115,12 +116,12 @@ for i in range(2):
 
 def read_image(self, filename, imageWidget, index):
     img = ImagePil.open(filename)
-    logging.info(f"User choose image{index+1} from {filename}")
+    logging.info(f"User choose image{index+1} from {filename}.")
     grayImg = ImageOps.grayscale(img)
 
     imgSize = img.size[1] * img.size[0]
     pixelSize = len(img.getdata()[0])
-
+    logging.info(f"image{[index+1]} is of size ({img.size[0]},{img.size[1]}) and an alpha of length {pixelSize}.")
     for i in range(2):
         if (
             index == i
@@ -130,7 +131,7 @@ def read_image(self, filename, imageWidget, index):
             )
         ):
             errorMssg(self, "Select two images with the same size.")
-            logging.critical("User selected images with different sizes")
+            logging.critical("User selected images with different sizes or alpha values.")
             return
 
     fft = np.fft.fft2(img)
