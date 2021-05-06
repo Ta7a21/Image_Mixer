@@ -140,7 +140,7 @@ def read_image(self, filename, imageWidget, index):
     )
     images[index].dictInit()
     fftGray = np.fft.fftshift(np.fft.fft2(grayImg))
-    fftGrayLog = np.log(1 + fftGray)
+    fftGrayLog = 20*(np.log(fftGray))
     grayImages[index] = Image(
         np.abs(fftGrayLog),
         np.angle(fftGray),
