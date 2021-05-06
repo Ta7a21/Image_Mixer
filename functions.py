@@ -6,11 +6,17 @@ from PIL.ImageQt import ImageQt
 import numpy as np
 import matplotlib.pyplot as plt
 import logging
+import logging.config
+import json
+from getSystemInfo import getSystemInfo
 
-# log = logging.getLogger("__name__")
-
-images = [0, 0]
-grayImages = [0, 0]
+logging.basicConfig(
+    filename="log.txt",
+    filemode="w",
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=0,
+)
+logging.info(f"System info: {json.loads(getSystemInfo())}")
 
 
 class image:
@@ -19,45 +25,37 @@ class image:
         self.phase = phase
         self.real = real
         self.imaginary = imaginary * 1j
-
-        if type(real) != int:
-            self.uniMagnitude = np.array((magnitude * 0) + 1)
-            self.uniPhase = np.array(phase * 0)
-        else:
-            self.uniMagnitude = 0
-            self.uniPhase = 0
-        self.compnts = {
-            "Magnitude": self.magnitude,
-            "Phase": self.phase,
-            "Real": self.real,
-            "Imaginary": self.imaginary,
-            "Uniform Magnitude": self.uniMagnitude,
-            "Uniform Phase": self.uniPhase,
-        }
+        self.compnts = {}
+        self.uniMagnitude = np.array((magnitude * 0) + 50) if type(real) != int else 0
+        self.uniPhase = np.array(phase * 0) if type(real) != int else 0
         self.imgSize = imgSize
         self.pixelSize = pixelSize
 
-    def fftComponent(self, combo, compWidget, index):
-        resetCombo(combo)
-        txt = combo.currentText()
-        comp = grayImages[index].compnts[txt]
-        if txt == 'Imaginary':
-            comp = abs(comp)
-        plt.imsave("ay 7aga.jpg", comp*10, cmap='gray')
-        fftcomp = Image.fromarray((comp*10).astype(np.uint8))
-        fftcomp.save(txt + ".jpg")
-        qim = ImageQt(fftcomp)
-        pix = QPixmap.fromImage(qim)
-        self.setImage(pix, compWidget)
+    def fftComponent(self, window, comboBox, compntWidget, index):
+        if not images[index].imgSize:
+            comboBox.setCurrentIndex(-1)
+            errorMssg(window, "Select an image to view its component.")
+            logging.warning("No image selected")
+            return
+        txt = comboBox.currentText()
+        compnt = grayImages[index].compnts[txt]
+        if txt == "Imaginary":
+            compnt = abs(compnt)
+        # plt.imsave("ay 7aga.jpg", compnt * 10, cmap="gray")
+        fftcompnt = Image.fromarray((compnt * 10).astype(np.uint8))
+        # fftcompnt.save(txt + ".jpg")
+        qtImage = ImageQt(fftcompnt)
+        pixelMap = QPixmap.fromImage(qtImage)
+        self.setImage(pixelMap, compntWidget)
 
-    def setImage(self, pix, Widget):
-        pix = pix.scaled(
+    def setImage(self, pixelMap, widget):
+        pixelMap = pixelMap.scaled(
             230, 230, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.FastTransformation
         )
-        item = QtWidgets.QGraphicsPixmapItem(pix)
+        item = QtWidgets.QGraphicsPixmapItem(pixelMap)
         scene = QtWidgets.QGraphicsScene()
         scene.addItem(item)
-        Widget.setScene(scene)
+        widget.setScene(scene)
 
     def mixer(self, ratio, compnts, index, widget):
         final_compnts = [0, 0]
@@ -65,9 +63,9 @@ class image:
         magInd = 1
         if compnts[0] == "Real" or compnts[0] == "Imaginary":
             for i in range(2):
-                final_compnts[i] = images[index[i]].compnts[compnts[i]] * (ratio[i]) + images[
-                    1 - index[i]
-                ].compnts[compnts[i]] * (1 - (ratio[i]))
+                final_compnts[i] = images[index[i]].compnts[compnts[i]] * (
+                    ratio[i]
+                ) + images[1 - index[i]].compnts[compnts[i]] * (1 - (ratio[i]))
             ifft = np.fft.ifft2(final_compnts[0] + final_compnts[1])
 
         else:
@@ -76,8 +74,7 @@ class image:
                 magInd = 0
 
             final_compnts[phaseInd] = 1j * (
-                images[index[phaseInd]].compnts[compnts[phaseInd]] *
-                (ratio[phaseInd])
+                images[index[phaseInd]].compnts[compnts[phaseInd]] * (ratio[phaseInd])
                 + images[1 - index[phaseInd]].compnts[compnts[phaseInd]]
                 * (1 - ratio[phaseInd])
             )
@@ -91,39 +88,66 @@ class image:
 
         ifft = np.real_if_close(ifft)
         img = Image.fromarray((ifft).astype(np.uint8))
-        qim = ImageQt(img)
-        pix = QPixmap.fromImage(qim)
-        self.setImage(pix, widget)
+        qtImage = ImageQt(img)
+        pixelMap = QPixmap.fromImage(qtImage)
+        self.setImage(pixelMap, widget)
+
+    def dictInit(self):
+        self.compnts = {
+            "Magnitude": self.magnitude,
+            "Phase": self.phase,
+            "Real": self.real,
+            "Imaginary": self.imaginary,
+            "Uniform Magnitude": self.uniMagnitude,
+            "Uniform Phase": self.uniPhase,
+        }
+
+
+images = []
+grayImages = []
+for i in range(2):
+    images.append(image(0, 0, 0, 0, 0, 0))
+    grayImages.append(0)
 
 
 def read_image(self, filename, imageWidget, index):
     img = Image.open(filename)
+    logging.info(f"User choose image{index+1} from {filename}")
     grayImg = ImageOps.grayscale(img)
 
     imgSize = img.size[1] * img.size[0]
     pixelSize = len(img.getdata()[0])
 
     for i in range(2):
-        if index == i and type(images[1 - i]) != int:
-            if imgSize != images[1 - i].imgSize or pixelSize != images[1 - i].pixelSize:
-                QMessageBox.critical(
-                    self, "Error", "Select two images with the same size")
-                return
+        if (
+            index == i
+            and images[1 - i].imgSize
+            and (
+                imgSize != images[1 - i].imgSize or pixelSize != images[1 - i].pixelSize
+            )
+        ):
+            errorMssg(self, "Select two images with the same size.")
+            logging.critical("User selected images with different sizes")
+            return
 
     fft = np.fft.fft2(img)
     images[index] = image(
-        np.abs(fft), np.angle(fft), np.real(
-            fft), np.imag(fft), imgSize, pixelSize
+        np.abs(fft), np.angle(fft), np.real(fft), np.imag(fft), imgSize, pixelSize
     )
-
+    images[index].dictInit()
     fftGray = np.fft.fftshift(np.fft.fft2(grayImg))
     fftGrayLog = np.log(1 + fftGray)
     grayImages[index] = image(
-        np.abs(fftGrayLog), np.angle(fftGray), np.real(
-            fftGrayLog), np.imag(fftGray), imgSize, 0
+        np.abs(fftGrayLog),
+        np.angle(fftGray),
+        np.real(fftGrayLog),
+        np.imag(fftGray),
+        imgSize,
+        0,
     )
-    pix = QPixmap(filename)
-    images[index].setImage(pix, imageWidget)
+    grayImages[index].dictInit()
+    pixelMap = QPixmap(filename)
+    images[index].setImage(pixelMap, imageWidget)
 
 
 def browsefiles(self, imageWidget, index):
@@ -131,25 +155,33 @@ def browsefiles(self, imageWidget, index):
         self, "Open file", "../", "*.jpg;;" " *.png;;" "*.jpeg;;"
     )
     file_path = fname[0]
-    read_image(self, file_path, imageWidget, index)
+    extensionsToCheck = (".jpg", ".png", ".jpeg")
+    if fname[0].endswith(extensionsToCheck):
+        read_image(self, file_path, imageWidget, index)
+    elif fname[0] != "":
+        errorMssg(self, "Invalid format.")
+        logging.warning(f"The user did not select a valid file format. {fname[0]}")
+        return
+    else:
+        return
 
 
 def openConnect(self, imageWidget, openImage, index):
     openImage.clicked.connect(lambda: browsefiles(self, imageWidget, index))
 
 
-def mixerImagesConnect(self, imageComp):
-    imageComp.activated[str].connect(lambda: output(self))
+def mixerImagesConnect(self, imageCompnt):
+    imageCompnt.activated[str].connect(lambda: output(self))
 
 
-def fftCompConnect(self, combo, compWidget, index):
-    combo.activated[str].connect(
-        lambda: images[index].fftComponent(combo, compWidget, index)
+def fftCompConnect(self, comboBox, compntWidget, index):
+    comboBox.activated[str].connect(
+        lambda: images[index].fftComponent(self, comboBox, compntWidget, index)
     )
 
 
-def outComboConnect(self, combo):
-    combo.activated[str].connect(lambda: comboboxChange(self, combo))
+def outComboConnect(self, comboBox):
+    comboBox.activated[str].connect(lambda: comboBoxChange(self, comboBox))
 
 
 def sliderConnect(self, slider, label):
@@ -161,10 +193,10 @@ def sliderChange(self, slider, label):
     output(self)
 
 
-def comboboxChange(self, combobox):
-    if combobox == self.mixerComp_1:
-        txt = combobox.currentText()
-        combobox2 = self.mixerComp_2
+def comboBoxChange(self, comboBox):
+    if comboBox == self.mixerComp_1:
+        txt = comboBox.currentText()
+        comboBox2 = self.mixerComp_2
         items = {
             "Magnitude": ["Phase", "Uniform Phase"],
             "Phase": ["Magnitude", "Uniform Magnitude"],
@@ -173,38 +205,54 @@ def comboboxChange(self, combobox):
             "Uniform Magnitude": ["Phase", "Uniform Phase"],
             "Uniform Phase": ["Magnitude", "Uniform Magnitude"],
         }
-        combobox2.clear()
-        combobox2.addItems(items[txt])
+        comboBox2.clear()
+        comboBox2.addItems(items[txt])
 
     output(self)
 
 
-def resetCombo(combobox):
-    index = combobox.findText("Choose Component")
-    combobox.removeItem(index)
-    index = combobox.findText("Choose Output")
-    combobox.removeItem(index)
-
-
 def output(self):
     outputTxt = self.setOutput.currentText()
+    if outputTxt == "":
+        errorMssg(self, "Select an output slot.")
+        logging.critical("No output slot selected")
+        return
     outputWidget = self.outputs[outputTxt]
 
     final_img = image(0, 0, 0, 0, 0, 0)
 
-    mixerImage = [
+    mixerImages = [
         int(self.mixerImage_1.currentText()[-1]) - 1,
         int(self.mixerImage_2.currentText()[-1]) - 1,
     ]
-    mixerComp = [self.mixerComp_1.currentText(
-    ), self.mixerComp_2.currentText()]
+    mixerCompnts = [self.mixerComp_1.currentText(), self.mixerComp_2.currentText()]
     sliders = [self.slider_1.value() / 100.0, self.slider_2.value() / 100.0]
-    if 0 in images:
-        QMessageBox.critical(
-            self, "Error", "Select two images to mix between them")
-        return
-    resetCombo(self.setOutput)
+    for img in images:
+        if not img.imgSize:
+            self.setOutput.setCurrentIndex(-1)
+            errorMssg(self, "Select two images to mix between them.")
+            logging.error("The user tried to mix only one image")
+            return
     for i in range(2):
-        img = images[mixerImage[i]].compnts[mixerComp[i]]
-        final_img.compnts[mixerComp[i]] = img
-    final_img.mixer(sliders, mixerComp, mixerImage, outputWidget)
+        img = images[mixerImages[i]].compnts[mixerCompnts[i]]
+        final_img.compnts[mixerCompnts[i]] = img
+    final_img.mixer(sliders, mixerCompnts, mixerImages, outputWidget)
+
+
+def reset(self, imgs, compnts, comboBoxes, outputs):
+    objects = [imgs, compnts]
+    for i in range(2):
+        images[i].imgSize = 0
+        for j in range(2):
+            if type(objects[j][i].scene()) == QtWidgets.QGraphicsScene:
+                for item in objects[j][i].scene().items():
+                    objects[j][i].scene().removeItem(item)
+        if type(outputs["Output " + str(i + 1)].scene()) == QtWidgets.QGraphicsScene:
+            for item in outputs["Output " + str(i + 1)].scene().items():
+                outputs["Output " + str(i + 1)].scene().removeItem(item)
+        comboBoxes[i].setCurrentIndex(-1)
+    self.setOutput.setCurrentIndex(-1)
+
+
+def errorMssg(self, txt):
+    QMessageBox.critical(self, "Error", txt)
