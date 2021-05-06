@@ -54,7 +54,7 @@ class Image:
         if txt == "Imaginary":
             compnt = abs(compnt)
         # plt.imsave("ay 7aga.jpg", compnt * 10, cmap="gray")
-        fftcompnt = ImagePil.fromarray((compnt * 10).astype(np.uint8))
+        fftcompnt = ImagePil.fromarray((compnt).astype(np.uint8))
         # fftcompnt.save(txt + ".jpg")
         qtImage = ImageQt(fftcompnt)
         pixelMap = QPixmap.fromImage(qtImage)
